@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Literal
 
-from backend.model.schema import PredictRequest
+from model.schema import PredictRequest
 
 RiskLevel = Literal["low", "medium", "high"]
 

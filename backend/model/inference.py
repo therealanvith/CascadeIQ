@@ -7,8 +7,8 @@ from typing import TypedDict
 
 import numpy as np
 
-from backend.model.schema import PredictRequest
-from backend.model.train import ModelArtifact, ensure_model_artifact
+from model.schema import PredictRequest
+from model.train import ModelArtifact, ensure_model_artifact
 
 
 class PredictResult(TypedDict):

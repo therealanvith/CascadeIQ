@@ -19,9 +19,9 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from backend.data.marinetraffic_client import fetch_exportvessels_bbox
-from backend.data.open_meteo import weather_severity_from_wind_ms, wind_speed_ms
-from backend.model.features import FEATURE_ORDER
+from data.marinetraffic_client import fetch_exportvessels_bbox
+from data.open_meteo import weather_severity_from_wind_ms, wind_speed_ms
+from model.features import FEATURE_ORDER
 
 
 def _parse_dt(val: Any) -> datetime | None:
