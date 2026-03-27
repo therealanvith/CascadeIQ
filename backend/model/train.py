@@ -10,10 +10,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from xgboost import XGBClassifier, XGBRegressor
 
-from backend.data.real_ais_training import load_training_dataframe
+from data.real_ais_training import load_training_dataframe
 
 load_dotenv()
-from backend.model.features import FEATURE_ORDER
+from model.features import FEATURE_ORDER
 
 
 @dataclass(frozen=True)
@@ -85,7 +85,7 @@ def ensure_model_artifact() -> Path:
 
 
 def train_cli() -> None:
-    """Optional entrypoint for manual retraining: `python -m backend.model.train`"""
+    """Optional entrypoint for manual retraining: `python -m model.train`"""
     p = train_and_save()
     print(f"Saved model to {p}")
 
