@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --background: #070b14;
+  --foreground: #e6edf7;
+  --dp-navy: #0a1b3d;
+  --dp-navy-2: #06112a;
+  --dp-gold: #d8b04c;
+  --dp-muted: #9bb0d0;
+  --dp-card: rgba(255, 255, 255, 0.06);
+  --dp-border: rgba(216, 176, 76, 0.22);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #070b14;
+    --foreground: #e6edf7;
+  }
+}
+
+body {
+  background: radial-gradient(1200px 800px at 20% -20%, rgba(216, 176, 76, 0.12), transparent 55%),
+    radial-gradient(900px 700px at 110% 0%, rgba(58, 140, 255, 0.14), transparent 60%),
+    linear-gradient(180deg, var(--dp-navy-2), var(--background));
+  color: var(--foreground);
+}
+
+.dp-card {
+  background: var(--dp-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.dp-border {
+  border-color: var(--dp-border);
+}
