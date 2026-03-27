@@ -4,6 +4,7 @@ import os
 import pickle
 from dataclasses import dataclass
 from pathlib import Path
+import joblib
 
 import numpy as np
 import pandas as pd
@@ -72,8 +73,7 @@ def train_and_save(seed: int = 42) -> Path:
     artifact = ModelArtifact(classifier=clf, regressor=reg, feature_order=list(FEATURE_ORDER))
     path = _artifact_path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "wb") as f:
-        pickle.dump(artifact, f)
+    joblib.dump(artifact, path)
     return path
 
 

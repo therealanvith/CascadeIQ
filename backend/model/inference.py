@@ -4,11 +4,12 @@ import os
 import pickle
 from pathlib import Path
 from typing import TypedDict
-
+import joblib
 import numpy as np
 
 from model.schema import PredictRequest
 from model.train import ModelArtifact, ensure_model_artifact
+
 
 
 class PredictResult(TypedDict):
@@ -32,10 +33,11 @@ class DelayModelBundle:
             return cls._cached
         ensure_model_artifact()
         path = _artifact_path()
-        with open(path, "rb") as f:
-            artifact = pickle.load(f)
+        import model.train as _train_module  # ensure ModelArtifact is registered
+        import sys
+        sys.modules['__main__'].ModelArtifact = ModelArtifact  # patch for pickle
+        artifact = joblib.load(path)
         if not isinstance(artifact, ModelArtifact):
-            # Backward/forward safety: accept dict-like too.
             artifact = ModelArtifact(
                 classifier=artifact["classifier"],
                 regressor=artifact["regressor"],
