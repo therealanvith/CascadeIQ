@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.graph.engine import build_supply_chain_graph, run_cascade
-from backend.model.inference import DelayModelBundle
-from backend.model.schema import PredictRequest
-from backend.model.train import ensure_model_artifact
-from backend.vessels import DEMO_VESSELS, list_vessels_with_risk
+from graph.engine import build_supply_chain_graph, run_cascade
+from model.inference import DelayModelBundle
+from model.schema import PredictRequest
+from model.train import ensure_model_artifact
+from vessels import DEMO_VESSELS, list_vessels_with_risk
 
 load_dotenv()
 
