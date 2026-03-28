@@ -23,8 +23,7 @@ def _get_allowed_origins() -> list[str]:
     origins.extend(
         [
             "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "https://cascadeiq-omega.vercel.app"
+            "http://127.0.0.1:3000"
         ]
     )
     # Deduplicate while preserving order
