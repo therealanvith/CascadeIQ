@@ -71,6 +71,17 @@ export default function RootLayout({
           </div>
         </div>
         {children}
+        <footer className="border-t border-white/10 mt-auto py-6 px-5">
+  <div className="mx-auto max-w-6xl flex flex-col items-center gap-2">
+    <div className="text-sm font-semibold text-white/70 tracking-wide">Developed by Team APYREX</div>
+    <div className="flex flex-wrap justify-center gap-x-6 gap-y-1">
+      {["Anvith N", "Utkrisht Thaman", "Mitansh Gupta", "Sai Pranav", "Nihal Goud"].map((name) => (
+        <span key={name} className="text-sm text-white/50">{name}</span>
+      ))}
+    </div>
+    <div className="text-xs text-white/30 mt-1">©CascadeIQ · DP World National Hackathon · BITS Pilani Hyderabad</div>
+  </div>
+</footer>
       </body>
     </html>
   );
