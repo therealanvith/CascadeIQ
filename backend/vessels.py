@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 from model.schema import PredictRequest
+import searoute as sr
 
 RiskLevel = Literal["low", "medium", "high"]
 
@@ -86,34 +87,25 @@ def _risk_level(prob: float) -> RiskLevel:
 
 
 def _route_polyline(route_name: str) -> list[dict[str, float]]:
-    # Very lightweight mock polylines (lat/lon) for map rendering.
-    if route_name == "Mumbai-Singapore":
+    routes = {
+        "Mumbai-Singapore": ([72.877, 19.076], [103.819, 1.352]),
+        "Chennai-Dubai": ([80.270, 13.082], [55.270, 25.204]),
+        "Kolkata-Rotterdam": ([88.363, 22.572], [4.477, 51.924]),
+    }
+    if route_name not in routes:
+        return []
+    origin, destination = routes[route_name]
+    try:
+        route = sr.searoute(origin, destination)
         return [
-            {"lat": 19.076, "lon": 72.8777},
-            {"lat": 10.0, "lon": 78.0},
-            {"lat": 1.3521, "lon": 103.8198},
+            {"lat": coord[1], "lon": coord[0]}
+            for coord in route["geometry"]["coordinates"]
         ]
-    if route_name == "Chennai-Dubai":
+    except Exception:
         return [
-            {"lat": 13.0827, "lon": 80.2707},
-            {"lat": 10.0, "lon": 75.0},
-            {"lat": 25.2048, "lon": 55.2708},
+            {"lat": origin[1], "lon": origin[0]},
+            {"lat": destination[1], "lon": destination[0]},
         ]
-    if route_name == "Kolkata-Rotterdam":
-        return [
-            {"lat": 22.5726, "lon": 88.3639},
-            {"lat": 10.0, "lon": 80.0},
-            {"lat": 35.0, "lon": 20.0},
-            {"lat": 51.9244, "lon": 4.4777},
-        ]
-    # Mumbai-Rotterdam
-    return [
-        {"lat": 19.076, "lon": 72.8777},
-        {"lat": 15.0, "lon": 60.0},
-        {"lat": 35.0, "lon": 20.0},
-        {"lat": 51.9244, "lon": 4.4777},
-    ]
-
 
 def list_vessels_with_risk(model: Any, vessels: list[DemoVessel]) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
