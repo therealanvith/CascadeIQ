@@ -50,18 +50,16 @@ class DelayModelBundle:
     def predict(cls, req: PredictRequest) -> PredictResult:
         artifact = cls.load()
         x = np.array(
-            [
-                [
-                    float(req.speed_deviation),
-                    float(req.weather_severity),
-                    float(req.port_congestion),
-                    float(req.distance_remaining),
-                    float(req.month),
-                ]
-            ],
+            [[
+                float(req.speed_deviation),
+                float(req.weather_severity),
+                float(req.port_congestion),
+                float(req.distance_remaining),
+                float(req.month),
+            ]],
             dtype=np.float32,
         )
-        prob = float(artifact.classifier.predict_proba(x)[0, 1])
         hours = float(max(0.0, artifact.regressor.predict(x)[0]))
+        # Derive probability from predicted hours — consistent by design
+        prob = float(min(1.0, hours / max(artifact.max_delay, 1.0)))
         return {"delay_probability": prob, "estimated_delay_hours": hours}
-
