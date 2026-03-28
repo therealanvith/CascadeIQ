@@ -27,10 +27,20 @@
 }
 
 body {
-  background: radial-gradient(1200px 800px at 20% -20%, rgba(216, 176, 76, 0.12), transparent 55%),
+  color: var(--foreground);
+  background: var(--background);
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: 
+    radial-gradient(1200px 800px at 20% -20%, rgba(216, 176, 76, 0.12), transparent 55%),
     radial-gradient(900px 700px at 110% 0%, rgba(58, 140, 255, 0.14), transparent 60%),
     linear-gradient(180deg, var(--dp-navy-2), var(--background));
-  color: var(--foreground);
 }
 
 .dp-card {

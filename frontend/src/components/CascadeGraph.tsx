@@ -46,7 +46,6 @@ export function CascadeGraph({
   const stepSet = new Set<string>();
   (cascade?.steps || []).slice(0, Math.max(0, activeStep)).forEach((s) => stepSet.add(s.node_id));
 
-  // Simple layered layout by node type.
   const layers: Record<string, string[]> = {
     Vessel: [],
     Port: [],
@@ -60,16 +59,24 @@ export function CascadeGraph({
 
   const layerKeys = Object.keys(layers);
   const maxPerLayer = Math.max(...layerKeys.map((k) => layers[k].length), 1);
-  const width = 920;
-  const height = Math.max(320, 90 + maxPerLayer * 70);
-  const xStep = width / (layerKeys.length + 1);
+
+  const nodeW = 160;
+  const nodeH = 44;
+  const colGap = 15;
+  const rowGap = 30;
+  const paddingX = 20;
+  const paddingY = 40;
+
+  const colWidth = nodeW + colGap;
+  const width = paddingX * 2 + layerKeys.length * colWidth;
+  const height = paddingY * 2 + maxPerLayer * (nodeH + rowGap);
 
   const visuals: NodeVisual[] = [];
   layerKeys.forEach((k, i) => {
     const ids = layers[k];
     ids.forEach((id, j) => {
-      const y = 80 + j * 70;
-      const x = xStep * (i + 1);
+      const x = paddingX + i * colWidth + nodeW / 2;
+      const y = paddingY + j * (nodeH + rowGap) + nodeH / 2;
       const meta = graph.nodes.find((nn) => nn.id === id);
       visuals.push({
         id,
@@ -88,30 +95,37 @@ export function CascadeGraph({
       <div className="flex items-center justify-between px-5 py-4">
         <div>
           <div className="text-sm font-semibold text-white">Cascade graph</div>
-          <div className="text-xs text-white/60">Unaffected nodes are blue; affected nodes are highlighted with delay.</div>
+          <div className="text-xs text-white/60">
+            Unaffected nodes are blue; affected nodes are highlighted with delay.
+          </div>
         </div>
         <div className="text-xs text-white/60">
           Step: <span className="text-white/85">{activeStep}</span>
         </div>
       </div>
       <div className="px-3 pb-4 overflow-x-auto">
-        <svg width={width} height={height} className="min-w-[920px]">
+        <svg width={width} height={height} style={{ minWidth: width }}>
           {graph.edges.map((e, idx) => {
             const s = byId.get(e.source);
             const t = byId.get(e.target);
             if (!s || !t) return null;
-            const isActive = cascade ? stepSet.has(e.target) || stepSet.has(e.source) : false;
+            const isActive = cascade
+              ? stepSet.has(e.target) || stepSet.has(e.source)
+              : false;
             return (
-              <g key={`${e.source}-${e.target}-${idx}`}>
-                <line
-                  x1={s.x + 72}
-                  y1={s.y}
-                  x2={t.x - 72}
-                  y2={t.y}
-                  stroke={isActive ? "rgba(216, 176, 76, 0.65)" : "rgba(255,255,255,0.12)"}
-                  strokeWidth={2}
-                />
-              </g>
+              <line
+                key={`${e.source}-${e.target}-${idx}`}
+                x1={s.x + nodeW / 2}
+                y1={s.y}
+                x2={t.x - nodeW / 2}
+                y2={t.y}
+                stroke={
+                  isActive
+                    ? "rgba(216, 176, 76, 0.65)"
+                    : "rgba(255,255,255,0.12)"
+                }
+                strokeWidth={2}
+              />
             );
           })}
 
@@ -122,18 +136,32 @@ export function CascadeGraph({
             return (
               <g key={n.id} opacity={isRevealed ? 1 : 0.35}>
                 <rect
-                  x={n.x - 78}
-                  y={n.y - 22}
-                  width={156}
-                  height={44}
-                  rx={14}
+                  x={n.x - nodeW / 2}
+                  y={n.y - nodeH / 2}
+                  width={nodeW}
+                  height={nodeH}
+                  rx={12}
                   fill={colors.fill}
                   stroke={colors.stroke}
+                  strokeWidth={1.5}
                 />
-                <text x={n.x} y={n.y - 4} textAnchor="middle" fill="white" fontSize="12" fontWeight={700}>
+                <text
+                  x={n.x}
+                  y={n.y - 5}
+                  textAnchor="middle"
+                  fill="white"
+                  fontSize="12"
+                  fontWeight={700}
+                >
                   {n.label}
                 </text>
-                <text x={n.x} y={n.y + 12} textAnchor="middle" fill="rgba(255,255,255,0.70)" fontSize="11">
+                <text
+                  x={n.x}
+                  y={n.y + 12}
+                  textAnchor="middle"
+                  fill="rgba(255,255,255,0.70)"
+                  fontSize="11"
+                >
                   {shortType(n.type)}
                   {aff ? ` • +${aff.delay_hours.toFixed(1)}h` : ""}
                 </text>
@@ -145,4 +173,3 @@ export function CascadeGraph({
     </div>
   );
 }
-

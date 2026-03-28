@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CascadeIQ",
   description: "Vessel Delay Cascade Predictor",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -32,12 +36,8 @@ export default function RootLayout({
         <div className="sticky top-0 z-50 border-b border-white/10 bg-[#050912]/80 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl border border-white/10 bg-[rgba(216,176,76,0.12)] flex items-center justify-center">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M2 12h4M18 12h4M12 2v4M12 18v4" stroke="#D8B04C" strokeWidth="2" strokeLinecap="round"/>
-    <circle cx="12" cy="12" r="4" stroke="#D8B04C" strokeWidth="2"/>
-    <path d="M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19" stroke="#D8B04C" strokeWidth="1.5" strokeLinecap="round"/>
-  </svg>
+              <div className="h-9 w-9 rounded-xl overflow-hidden">
+  <Image src="/logo.png" alt="CascadeIQ" width={36} height={36} className="object-contain" />
 </div>
 <div className="leading-tight">
   <div className="text-sm font-semibold tracking-wide text-white">
